@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Direction</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <meta content="" name="description" />
+  <meta content="" name="keywords" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  
+  <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/css/style.css" rel="stylesheet">
+  
+  <script src="assets/js/index.js?v=1.0.17"></script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+ 
+</head>
+
+<body>
+  <div class="page-container">
+    <div class="row m-0 full-height">
+      <div class="col-md-3">
+        <div class="left-part">
+          <h4>Filter</h4>
+          <form class="py-1">
+            <div class="mb-3 address-from">
+              <label for="exampleInputEmail1" class="form-label">Address From</label>
+              <input type="text" class="form-control" id="address_from" name="address_from"  placeholder="Address From" />
+            </div>
+            <div class="mb-3 address-to">
+              <label for="exampleInputEmail1" class="form-label">Address To</label>
+              <input type="text" class="form-control" id="address_to" name="address_to" placeholder="Address To" />
+            </div>
+            <h4>Select Your EV car</h4>
+            <div class="car-list" id="style-5">
+              <div class="form-check">
+                <input class="form-check-input ev_car" type="checkbox" value="263" id="flexCheckDefault" name="ev_car"  onclick="toggleCarModel('263');" />
+                <label class="form-check-label" for="flexCheckDefault">
+                  MG ZS
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input ev_car" type="checkbox" value="311" id="flexCheckDefault1" name="ev_car"  onclick="toggleCarModel('311');" />
+                <label class="form-check-label" for="flexCheckDefault1">
+                  Hyundai AE.3 Ioniq Electric
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input ev_car" type="checkbox" value="270" id="flexCheckDefault2" name="ev_car"  onclick="toggleCarModel('270');" />
+                <label class="form-check-label" for="flexCheckDefault2">
+                  Nissan Leaf
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input ev_car" type="checkbox" value="200" id="flexCheckDefault3" name="ev_car"  onclick="toggleCarModel('200');" />
+                <label class="form-check-label" for="flexCheckDefault3">
+                  Renault Kangoo Maxi ZE 33
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input ev_car" type="checkbox" value="233" id="flexCheckDefault4" name="ev_car"  onclick="toggleCarModel('233');" />
+                <label class="form-check-label" for="flexCheckDefault4">
+                  Mini Cooper SE
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input ev_car" type="checkbox" value="455" id="flexCheckDefault5" name="ev_car"  onclick="toggleCarModel('455');" />
+                <label class="form-check-label" for="flexCheckDefault5">
+                  Kia Niro EV
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input ev_car" type="checkbox" value="485" id="flexCheckDefault6" name="ev_car"  onclick="toggleCarModel('485');" />
+                <label class="form-check-label" for="flexCheckDefault6">
+                  Hyundai Ioniq 5
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input ev_car" type="checkbox" value="200" id="flexCheckDefault7" name="ev_car" onclick="toggleCarModel('200');" />
+                <label class="form-check-label" for="flexCheckDefault7">
+                  Mazda MX-30 EV
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input ev_car" type="checkbox" value="484" id="flexCheckDefault8" name="ev_car" onclick="toggleCarModel('484');" />
+                <label class="form-check-label" for="flexCheckDefault8">
+                  Hyundai Kona EV
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input ev_car" type="checkbox" value="440" id="flexCheckDefault9" name="ev_car" onclick="toggleCarModel('440');" />
+                <label class="form-check-label" for="flexCheckDefault9">
+                  Tesla Model 3
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input ev_car" type="checkbox" value="440" id="flexCheckDefault10" name="ev_car" onclick="toggleCarModel('440');" />
+                <label class="form-check-label" for="flexCheckDefault10">
+                  Kia EV6
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input ev_car" type="checkbox" value="315" id="flexCheckDefault11" name="ev_car" onclick="toggleCarModel('315');" />
+                <label class="form-check-label" for="flexCheckDefault11">
+                  Lexus UX300e
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input ev_car" type="checkbox" value="283" id="flexCheckDefault12" name="ev_car" onclick="toggleCarModel('283');" />
+                <label class="form-check-label" for="flexCheckDefault12">
+                  BMW i3s 120Ah
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input ev_car" type="checkbox" value="426" id="flexCheckDefault13" name="ev_car" onclick="toggleCarModel('426');" />
+                <label class="form-check-label" for="flexCheckDefault13">
+                  Mercedes-Benz EQA 250
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input ev_car" type="checkbox" value="480" id="flexCheckDefault14" name="ev_car" onclick="toggleCarModel('480');" />
+                <label class="form-check-label" for="flexCheckDefault14">
+                  Tesla Model Y
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input ev_car" type="checkbox" value="470" id="flexCheckDefault15" name="ev_car" onclick="toggleCarModel('470');"  />
+                <label class="form-check-label" for="flexCheckDefault15">
+                  Polestar 2
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input ev_car" type="checkbox" value="418" id="flexCheckDefault16" name="ev_car" onclick="toggleCarModel('418');" />
+                <label class="form-check-label" for="flexCheckDefault16">
+                  Volvo XC40 Recharge Pure Electric
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input ev_car" type="checkbox" value="470" id="flexCheckDefault17" name="ev_car" onclick="toggleCarModel('470');" />
+                <label class="form-check-label" for="flexCheckDefault17">
+                  Jaguar I-Pace
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input ev_car" type="checkbox" value="460" id="flexCheckDefault18" name="ev_car" onclick="toggleCarModel('460');" />
+                <label class="form-check-label" for="flexCheckDefault18">
+                  BMW iX3
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input ev_car" type="checkbox" value="663" id="flexCheckDefault19" name="ev_car" onclick="toggleCarModel('663');" />
+                <label class="form-check-label" for="flexCheckDefault19">
+                  Tesla Model S
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input ev_car" type="checkbox" value="300" id="flexCheckDefault20" name="ev_car" onclick="toggleCarModel('300');" />
+                <label class="form-check-label" for="flexCheckDefault20">
+                  Audi e-tron SUV
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input ev_car" type="checkbox" value="417" id="flexCheckDefault21" name="ev_car" onclick="toggleCarModel('417');" />
+                <label class="form-check-label" for="flexCheckDefault21">
+                  Mercedes-Benz EQC 400
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input ev_car" type="checkbox" value="347" id="flexCheckDefault22" name="ev_car" onclick="toggleCarModel('347');" />
+                <label class="form-check-label" for="flexCheckDefault22">
+                  Audi e-tron 50 Sportback
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input ev_car" type="checkbox" value="580" id="flexCheckDefault23" name="ev_car" onclick="toggleCarModel('580');" />
+                <label class="form-check-label" for="flexCheckDefault23">
+                  Tesla Model X
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input ev_car" type="checkbox" value="600" id="flexCheckDefault24" name="ev_car" onclick="toggleCarModel('600');" />
+                <label class="form-check-label" for="flexCheckDefault24">
+                  BMW iX xDrive50
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input ev_car" type="checkbox" value="487" id="flexCheckDefault25" name="ev_car" onclick="toggleCarModel('487');" />
+                <label class="form-check-label" for="flexCheckDefault25">
+                  Audi e-tron GT
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input ev_car" type="checkbox" value="407" id="flexCheckDefault26" name="ev_car" onclick="toggleCarModel('407');" />
+                <label class="form-check-label" for="flexCheckDefault26">
+                  Porsche Taycan
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input ev_car" type="checkbox" value="770" id="flexCheckDefault27" name="ev_car" onclick="toggleCarModel('770');" />
+                <label class="form-check-label" for="flexCheckDefault27">
+                  Mercedes-Benz EQS
+                </label>
+              </div>
+            </div>
+            <!-- <button type="submit" class="btn btn-primary">Submit</button> -->
+          </form>
+        </div>
+      </div>
+      <div class="col-md-9 mx-0 px-0">
+        <div style="width: 100%; height: 100%; position: relative;">
+          <div id="map" style="width: 100%; height: 100%;"></div>
+          <div class="mapLoader" id="mapLoader" style="width: 100%; height: 100%; position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px; z-index: 99; background-color: rgba(0,0,0, 0.15);color: '#FFFFFF'; align-items: center; justify-content: center;">
+            <h1>Loading Data...</h1>
+          </div>
+          <div class="dvDistance" id="dvDistance"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+    
+  
+  <script src="assets/js/bootstrap.min.js"></script>
+  <!-- START :: Select only one checkbox -->
+  <script src="assets/js/jquery.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      $('input:checkbox').click(function () {
+        $('input:checkbox').not(this).prop('checked', false);
+      });
+    });
+  </script>
+  <!-- END :: Select only one checkbox -->
+  <script
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDypu85TUnzfjVptyC2yn4E78pThMn-SNI&callback=initAutocomplete&libraries=places&v=weekly"
+  async
+  ></script>
+
+</body>
+
+</html>
