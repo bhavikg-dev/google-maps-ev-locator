@@ -15,6 +15,7 @@ let routeSteps = [];
 let directionsService;
 let directionsRenderer;
 let markers = [];
+let isErrorShow = false;
 
 /**
  * initAutocomplete
@@ -52,10 +53,6 @@ function initAutocomplete() {
 
   /* Listen for the event fired when the user selects a prediction and retrieve details for that place. */
   searchBoxFrom.addListener("places_changed", () => {
-    var carModels =  document.getElementsByName("ev_car");
-     for(var i=0, n=carModels.length;i<n;i++) {
-      carModels[i].checked = false;
-     }
     const places = searchBoxFrom.getPlaces();
 
     if (places.length == 0) {
@@ -82,10 +79,6 @@ function initAutocomplete() {
 
   /* Listen for the event fired when the user selects a prediction and retrieve details for that place. */
   searchBoxTo.addListener("places_changed", () => {
-     var carModels =  document.getElementsByName("ev_car");
-     for(var i=0, n=carModels.length;i<n;i++) {
-      carModels[i].checked = false;
-     }
     const places = searchBoxTo.getPlaces();
 
     if (places.length == 0) {
@@ -154,6 +147,13 @@ function calculateAndDisplayRoute(directionsService, directionsRenderer) {
     });
 }
 
+function deSelectCheckBoxes() {
+  var carModels =  document.getElementsByName("ev_car");
+  for(var i=0, n=carModels.length;i<n;i++) {
+    carModels[i].checked = false;
+  }
+}
+
 /**
  * toggleCarModel
  * @param {number} range
@@ -164,15 +164,18 @@ function toggleCarModel(range) {
   deleteMarkers();
   /* Calculate Range */
   const expectedRangeInMeters = +range > 0 ? +range*1000 : 0; 
-  const bestGuessRangeInMeters = expectedRangeInMeters*0.85;
+  const bestGuessRangeInMeters = expectedRangeInMeters*1.00;
   carModelRange = bestGuessRangeInMeters;
   if (totalDistance > bestGuessRangeInMeters) {
     let expectedEVStationsRequired = Math.floor(totalDistance/bestGuessRangeInMeters);
     let distanceRanges = getRangeOfDistanceForCharging(totalDistance, bestGuessRangeInMeters);
-    alert('Total charging station required - ' + expectedEVStationsRequired);
+    console.log('Total charging station required - ' + expectedEVStationsRequired);
     getPolyLineBasedUponChargingRange(distanceRanges);
     calculateAndDisplayRoute(directionsService, directionsRenderer);
+    /* Enable below function to show Required location to show EV Stations */
     showEVStationsOnMap(false);
+    /* Enable below function to show EV Stations on the Map */
+    showEVStationsOnMap(true);
   } else {
     console.log('You do not need charging stations');
   }
@@ -188,7 +191,7 @@ function getPolyLineBasedUponChargingRange(distanceRanges) {
   for (let l=0; l<distanceRanges.length; l++) {
     const stationLatLng = getLatLngOnRoute(directionsResponse, (distanceRanges[l]/1000));
     let stationPoint = getLatLngFromRouteLegItem(stationLatLng);
-    stationPolyline.push({ request: stationPoint, type: 'latLng' });
+    stationPolyline.push({ request: stationPoint, type: 'latLng', distancePoint: (distanceRanges[l]/1000) });
   }
 }
 
@@ -207,12 +210,14 @@ function between(x, min, max) {
  * showEVStationsOnMap
  * @description Show Multiple EV Stations on the Map
  */
-function showEVStationsOnMap(isChargingStation) {
-  setLoader(true);
+async function showEVStationsOnMap(isChargingStation) {
   for(let j=0; j<stationPolyline.length; j++) {
-    showEVStationAsMarker(stationPolyline[j].request, isChargingStation);
+    if (isChargingStation) {
+      showMarkersForMyRoutePolyLine(stationPolyline[j].request, 75);
+    } else {
+      showEVStationAsMarker(stationPolyline[j].request, isChargingStation, stationPolyline[j].distancePoint);
+    }
   }
-  setLoader(false);
 }
 
 /**
@@ -241,16 +246,60 @@ function getLatLngFromRouteLegItem(point) {
 }
 
 /**
+ * showMarkersForMyRoutePolyLine
+ * @param {string} polyline
+ * @description Get EV Stations Marker based on Polyline
+ */
+ function showMarkersForMyRoutePolyLine(request, countToShow) {
+  var url = 'https://api.openchargemap.io/v3/poi/?output=json&maxresults=20&compact=true&verbose=false&key=a9389179-2aad-4d20-acfb-f4d03f5df3e8&distance='+ countToShow +'&distanceunit=KM&latitude=' + request.lat + '&longitude=' + request.lng;
+ 
+  console.log(url);
+  setLoader(true);
+  getChargeStation(url).then((stations) => {
+    stationLength = stations.length;
+    if (stationLength === 0) {
+      console.log('inside');
+      console.log(isErrorShow);
+      isErrorShow = isErrorShow || true;
+      console.log(isErrorShow);
+      // const newCount = +countToShow+25;
+      // showMarkersForMyRoutePolyLine(request, newCount);
+      setLoader(false);
+    } else {
+      for (let i = 0; i < stationLength; i++) {
+        showEVStationAsMarker(stations[i].AddressInfo, true);
+      }
+    }
+    console.log('Value for Modal - ' + isErrorShow);
+    if (isErrorShow) {
+      getNoChargingStationMessage();
+    }
+  }).catch((error) => {
+    console.log(error);
+    setLoader(false);
+  }).finally(() => {
+    setLoader(false);
+  });
+}
+
+/**
  * showMarker
  * @param {object} addressInfo 
  * @description Shows Each EV Station as a Marker in the Existing Google Map
  */
-function showEVStationAsMarker(addressInfo, chargingStation = false) {
+function showEVStationAsMarker(addressInfo, chargingStation = false, distancePointMarker = '') {
   var latitude = addressInfo.lat;
   var longitude = addressInfo.lng;
-  var title = 'EV Station Required';
-  var address = 'EV Station Required';
+  var title = 'EV Station Required at ' + distancePointMarker + ' km' ;
+  var address = 'EV Station Required at ' + distancePointMarker + ' km' ;
 
+  if (chargingStation) {
+    latitude = addressInfo.Latitude;
+    longitude = addressInfo.Longitude;
+    title = addressInfo.Title ?? '';
+    address = addressInfo.AddressLine1 ?? '' + ' ' + addressInfo.town ?? '' + ' ' + addressInfo.StateOrProvince ?? '' + ' ' + addressInfo.Postcode ?? '';
+  }
+  
   const contentString =
     '<div class="stationWrapper">' +
     '<h4 class="stationTitle">'+ title +'</h4>' +
@@ -259,11 +308,11 @@ function showEVStationAsMarker(addressInfo, chargingStation = false) {
     "</div>" +
     "</div>";
   const infoWindow = new google.maps.InfoWindow();
-
+  const mapIcon = chargingStation ? 'https://mydemoserver.site/map_images/icon.png' : 'https://maps.gstatic.com/mapfiles/ridefinder-images/mm_20_green.png';
   var myLatlng = new google.maps.LatLng(latitude, longitude);
   var marker = new google.maps.Marker({
       position: myLatlng,
-      icon: chargingStation ? 'https://mydemoserver.site/map_images/icon.png' : 'http://maps.gstatic.com/mapfiles/ridefinder-images/mm_20_green.png',
+      icon: mapIcon,
       title: title
   });
   markers.push(marker);
@@ -282,6 +331,17 @@ function showEVStationAsMarker(addressInfo, chargingStation = false) {
 }
 
 /**
+ * getChargeStation
+ * @param {string} url 
+ * @returns charging stations with location details
+ */
+ async function getChargeStation(url) {
+  const response = await fetch(url);
+  var data = await response.json();
+  return data;
+}
+
+/**
  * deleteMarkers
  * @description Delete all the existing markers and polyline/boundingBox for the map
  */
@@ -291,6 +351,7 @@ function deleteMarkers() {
   }
   markers = [];
   stationPolyline = [];
+  isErrorShow = false;
 }
 
 /**
@@ -335,4 +396,12 @@ function getRangeOfDistanceForCharging(distanceToCover, modelRange) {
     array.splice(0, 1);
   }
   return array;
+}
+
+function getNoChargingStationMessage() {
+  Swal.fire(
+    'Oops !',
+    'This journey is currently not possible due to range of the model you have chosen and/or availability of charging stations',
+    'error'
+  );
 }
